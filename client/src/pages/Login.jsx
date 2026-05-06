@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "../context/AuthContext";
+import { Link } from "react-router-dom";
 
 
 const Login = () => {
@@ -77,6 +78,18 @@ const Login = () => {
           </button>
 
         </form>
+        <p className="text-center mt-4 text-gray-600">
+
+  Not registered?{" "}
+
+  <Link
+    to="/signup"
+    className="text-blue-600 font-bold hover:underline"
+  >
+    Sign Up
+  </Link>
+
+</p>
 
       </div>
 
