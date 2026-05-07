@@ -3,7 +3,7 @@ import express from "express";
 import {
   createTask,
   getTasks,
-  updateTask,
+  updateTaskStatus,
   deleteTask,
 } from "../controllers/taskController.js";
 
@@ -32,7 +32,7 @@ router.get(
 router.put(
   "/:id",
   protect,
-  updateTask
+  updateTaskStatus
 );
 
 
