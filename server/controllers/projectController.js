@@ -1,18 +1,32 @@
-const Project = require("../models/Project");
+import Project from "../models/Project.js";
 
 
 // CREATE PROJECT
-const createProject = async (req, res) => {
+export const createProject = async (
+  req,
+  res
+) => {
+
   try {
 
-    const { name, description } = req.body;
-
-    const project = await Project.create({
+    const {
       name,
       description,
-      admin: req.user._id,
-      members: [req.user._id],
-    });
+    } = req.body;
+
+
+    const project =
+      await Project.create({
+
+        name,
+        description,
+
+        admin: req.user._id,
+
+        members: [req.user._id],
+
+      });
+
 
     res.status(201).json(project);
 
@@ -26,14 +40,30 @@ const createProject = async (req, res) => {
 
 
 // GET ALL PROJECTS
-const getProjects = async (req, res) => {
+export const getProjects = async (
+  req,
+  res
+) => {
+
   try {
 
-    const projects = await Project.find({
-      members: req.user._id,
-    })
-      .populate("admin", "name email")
-      .populate("members", "name email");
+    const projects =
+      await Project.find({
+
+        members: req.user._id,
+
+      })
+
+      .populate(
+        "admin",
+        "name email"
+      )
+
+      .populate(
+        "members",
+        "name email"
+      );
+
 
     res.json(projects);
 
@@ -43,10 +73,4 @@ const getProjects = async (req, res) => {
       message: error.message,
     });
   }
-};
-
-
-module.exports = {
-  createProject,
-  getProjects,
 };

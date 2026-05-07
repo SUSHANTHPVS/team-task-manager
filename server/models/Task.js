@@ -1,53 +1,47 @@
-const mongoose = require("mongoose");
+import express from "express";
 
-const taskSchema = new mongoose.Schema(
-  {
-    title: {
-      type: String,
-      required: true,
-      trim: true,
-    },
+import {
+  createTask,
+  getTasks,
+  updateTask,
+  deleteTask,
+} from "../controllers/taskController.js";
 
-    description: {
-      type: String,
-    },
+import protect from "../middleware/authMiddleware.js";
 
-    priority: {
-      type: String,
-      enum: ["Low", "Medium", "High"],
-      default: "Medium",
-    },
+const router = express.Router();
 
-    status: {
-      type: String,
-      enum: ["To Do", "In Progress", "Done"],
-      default: "To Do",
-    },
 
-    dueDate: {
-      type: Date,
-    },
-
-    assignedTo: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
-
-    project: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Project",
-      required: true,
-    },
-
-    createdBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-  },
-  {
-    timestamps: true,
-  }
+// CREATE TASK
+router.post(
+  "/",
+  protect,
+  createTask
 );
 
-module.exports = mongoose.model("Task", taskSchema);
+
+// GET TASKS
+router.get(
+  "/:projectId",
+  protect,
+  getTasks
+);
+
+
+// UPDATE TASK
+router.put(
+  "/:id",
+  protect,
+  updateTask
+);
+
+
+// DELETE TASK
+router.delete(
+  "/:id",
+  protect,
+  deleteTask
+);
+
+
+export default router;

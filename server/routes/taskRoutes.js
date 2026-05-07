@@ -1,33 +1,48 @@
-const express = require("express");
+import express from "express";
 
-const router = express.Router();
-
-const {
+import {
   createTask,
   getTasks,
   updateTaskStatus,
   deleteTask,
-} = require("../controllers/taskController");
+} from "../controllers/taskController.js";
 
-const {
-  protect,
-} = require("../middleware/authMiddleware");
+import protect from "../middleware/authMiddleware.js";
+
+
+const router = express.Router();
 
 
 // CREATE TASK
-router.post("/", protect, createTask);
+router.post(
+  "/",
+  protect,
+  createTask
+);
 
 
 // GET TASKS
-router.get("/", protect, getTasks);
+router.get(
+  "/",
+  protect,
+  getTasks
+);
 
 
 // UPDATE STATUS
-router.put("/:id", protect, updateTaskStatus);
+router.put(
+  "/:id",
+  protect,
+  updateTaskStatus
+);
 
 
 // DELETE TASK
-router.delete("/:id", protect, deleteTask);
+router.delete(
+  "/:id",
+  protect,
+  deleteTask
+);
 
 
 export default router;

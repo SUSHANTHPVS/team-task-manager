@@ -1,8 +1,12 @@
-const Task = require("../models/Task");
+import Task from "../models/Task.js";
 
 
 // CREATE TASK
-const createTask = async (req, res) => {
+export const createTask = async (
+  req,
+  res
+) => {
+
   try {
 
     const {
@@ -14,15 +18,21 @@ const createTask = async (req, res) => {
       project,
     } = req.body;
 
-    const task = await Task.create({
-      title,
-      description,
-      priority,
-      dueDate,
-      assignedTo,
-      project,
-      createdBy: req.user._id,
-    });
+
+    const task =
+      await Task.create({
+
+        title,
+        description,
+        priority,
+        dueDate,
+        assignedTo,
+        project,
+
+        createdBy: req.user._id,
+
+      });
+
 
     res.status(201).json(task);
 
@@ -36,12 +46,26 @@ const createTask = async (req, res) => {
 
 
 // GET TASKS
-const getTasks = async (req, res) => {
+export const getTasks = async (
+  req,
+  res
+) => {
+
   try {
 
-    const tasks = await Task.find()
-      .populate("assignedTo", "name email")
-      .populate("project", "name");
+    const tasks =
+      await Task.find()
+
+      .populate(
+        "assignedTo",
+        "name email"
+      )
+
+      .populate(
+        "project",
+        "name"
+      );
+
 
     res.json(tasks);
 
@@ -55,20 +79,35 @@ const getTasks = async (req, res) => {
 
 
 // UPDATE TASK STATUS
-const updateTaskStatus = async (req, res) => {
+export const updateTaskStatus = async (
+  req,
+  res
+) => {
+
   try {
 
-    const task = await Task.findById(req.params.id);
+    const task =
+      await Task.findById(
+        req.params.id
+      );
+
 
     if (!task) {
+
       return res.status(404).json({
         message: "Task not found",
       });
     }
 
-    task.status = req.body.status || task.status;
 
-    const updatedTask = await task.save();
+    task.status =
+      req.body.status ||
+      task.status;
+
+
+    const updatedTask =
+      await task.save();
+
 
     res.json(updatedTask);
 
@@ -82,21 +121,33 @@ const updateTaskStatus = async (req, res) => {
 
 
 // DELETE TASK
-const deleteTask = async (req, res) => {
+export const deleteTask = async (
+  req,
+  res
+) => {
+
   try {
 
-    const task = await Task.findById(req.params.id);
+    const task =
+      await Task.findById(
+        req.params.id
+      );
+
 
     if (!task) {
+
       return res.status(404).json({
         message: "Task not found",
       });
     }
 
+
     await task.deleteOne();
 
+
     res.json({
-      message: "Task deleted successfully",
+      message:
+        "Task deleted successfully",
     });
 
   } catch (error) {
@@ -105,12 +156,4 @@ const deleteTask = async (req, res) => {
       message: error.message,
     });
   }
-};
-
-
-module.exports = {
-  createTask,
-  getTasks,
-  updateTaskStatus,
-  deleteTask,
 };
