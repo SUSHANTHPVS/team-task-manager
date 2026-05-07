@@ -53,8 +53,33 @@ export const getTasks = async (
 
   try {
 
-    const tasks =
-      await Task.find()
+    let tasks;
+
+    // ADMIN
+    if (req.user.role === "admin") {
+
+      tasks = await Task.find()
+
+        .populate(
+          "assignedTo",
+          "name email"
+        )
+
+        .populate(
+          "project",
+          "name"
+        );
+
+    }
+
+    // MEMBER
+    else {
+
+      tasks = await Task.find({
+
+        assignedTo: req.user._id,
+
+      })
 
       .populate(
         "assignedTo",
@@ -65,7 +90,7 @@ export const getTasks = async (
         "project",
         "name"
       );
-
+    }
 
     res.json(tasks);
 

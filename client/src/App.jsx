@@ -10,6 +10,11 @@ import Dashboard from "./pages/Dashboard";
 import Projects from "./pages/Projects";
 import Tasks from "./pages/Tasks";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AdminLogin from "./pages/AdminLogin";
+
+import AdminSignup from "./pages/AdminSignup";
+
+import AdminDashboard from "./pages/AdminDashboard";
 
 
 function App() {
@@ -56,6 +61,20 @@ function App() {
       </ProtectedRoute>
     }
   />
+  <Route
+  path="/admin/login"
+  element={<AdminLogin />}
+/>
+
+<Route
+  path="/admin/signup"
+  element={<AdminSignup />}
+/>
+
+<Route
+  path="/admin/dashboard"
+  element={<AdminDashboard />}
+/>
 
 </Routes>
 

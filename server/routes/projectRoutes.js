@@ -25,6 +25,10 @@ router.get(
   protect,
   getProjects
 );
-
+router.put(
+  "/:id/members",
+  protect,
+  addMember
+);
 
 export default router;

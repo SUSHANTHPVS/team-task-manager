@@ -20,7 +20,7 @@ const generateToken = (id) => {
 
 // REGISTER USER
 export const registerUser = async (
-  req,
+  req,role,
   res
 ) => {
 
@@ -30,6 +30,7 @@ export const registerUser = async (
       name,
       email,
       password,
+      role,
     } = req.body;
 
 
@@ -63,6 +64,7 @@ export const registerUser = async (
         name,
         email,
         password: hashedPassword,
+        role: role || "user",
 
       });
 
