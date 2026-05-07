@@ -79,6 +79,7 @@ export const registerUser = async (
       email: user.email,
 
       token: generateToken(user._id),
+      role: user.role,
 
     });
 
