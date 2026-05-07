@@ -30,4 +30,4 @@ router.put("/:id", protect, updateTaskStatus);
 router.delete("/:id", protect, deleteTask);
 
 
-module.exports = router;
+export default router;
