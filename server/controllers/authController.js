@@ -20,18 +20,18 @@ const generateToken = (id) => {
 
 // REGISTER USER
 export const registerUser = async (
-  req,role,
+  req,
   res
 ) => {
 
   try {
 
     const {
-      name,
-      email,
-      password,
-      role,
-    } = req.body;
+  name,
+  email,
+  password,
+  role,
+} = req.body;
 
 
     // CHECK USER
@@ -58,15 +58,17 @@ export const registerUser = async (
 
 
     // CREATE USER
-    const user =
-      await User.create({
+    const user = await User.create({
 
-        name,
-        email,
-        password: hashedPassword,
-        role: role || "user",
+  name,
 
-      });
+  email,
+
+  password: hashedPassword,
+
+  role: role || "user",
+
+});
 
 
     // RESPONSE
