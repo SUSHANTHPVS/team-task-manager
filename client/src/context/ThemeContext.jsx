@@ -17,7 +17,7 @@ export const ThemeProvider = ({
   const toggleTheme = () => {
 
     setDarkMode(
-      (prev) => !prev
+      !darkMode
     );
   };
 
@@ -41,5 +41,4 @@ export const ThemeProvider = ({
 };
 
 export const useTheme = () =>
-
   useContext(ThemeContext);
