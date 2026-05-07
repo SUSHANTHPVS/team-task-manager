@@ -16,20 +16,25 @@ const Signup = () => {
 
   const handleSubmit = async (e) => {
 
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
+  try {
 
-      await signup(name, email, password);
+    await signup(
+      name,
+      email,
+      password
+    );
 
-      navigate("/dashboard");
+    navigate("/dashboard");
 
-    } catch (error) {
+  } catch (error) {
 
-      alert(error.response?.data?.message || "Signup Failed");
-    }
-  };
+    console.log(error);
 
+    alert("Signup Failed");
+  }
+};
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">

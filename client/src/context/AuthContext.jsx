@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }) => {
       data.token
     );
 
-    setUser(data.token);
+    return data;
   };
 
 
