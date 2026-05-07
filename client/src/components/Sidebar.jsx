@@ -81,39 +81,17 @@ const Sidebar = () => {
 
     <div className="w-64 bg-gray-900 text-white min-h-screen p-6">
 
-      <h1 className="text-3xl font-bold mb-10 text-blue-400">
+      <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
 
-        TaskFlow
+    TM
 
-      </h1>
+  </div>
 
+  <h1 className="text-3xl font-bold text-blue-400">
 
-      {/* NAV LINKS */}
+    TaskManager
 
-      <div className="space-y-4">
-
-        {links.map((link) => (
-
-          <Link
-            key={link.path}
-            to={link.path}
-
-            className={`block px-4 py-3 rounded-lg transition ${
-              location.pathname ===
-              link.path
-
-                ? "bg-blue-600"
-
-                : "hover:bg-gray-800"
-            }`}
-          >
-
-            {link.name}
-
-          </Link>
-        ))}
-
-      </div>
+  </h1>
 
 
       {/* THEME */}
