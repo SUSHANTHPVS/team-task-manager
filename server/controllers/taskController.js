@@ -164,7 +164,72 @@ export const updateTaskStatus = async (
     });
   }
 };
+// EDIT TASK
+export const editTask = async (
+  req,
+  res
+) => {
 
+  try {
+
+    const task =
+      await Task.findById(
+        req.params.id
+      );
+
+    if (!task) {
+
+      return res.status(404).json({
+
+        message:
+          "Task not found",
+
+      });
+    }
+
+    // ADMIN ONLY
+    if (req.user.role !== "admin") {
+
+      return res.status(403).json({
+
+        message:
+          "Admin only",
+
+      });
+    }
+
+    task.title =
+      req.body.title ||
+      task.title;
+
+    task.description =
+      req.body.description ||
+      task.description;
+
+    task.priority =
+      req.body.priority ||
+      task.priority;
+
+    task.status =
+      req.body.status ||
+      task.status;
+
+    task.dueDate =
+      req.body.dueDate ||
+      task.dueDate;
+
+    const updatedTask =
+      await task.save();
+
+    res.json(updatedTask);
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
 
 // DELETE TASK
 export const deleteTask = async (

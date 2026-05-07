@@ -5,6 +5,8 @@ import {
   getProjects,
   addMember,
   removeMember,
+  editProject,
+deleteProject,
 } from "../controllers/projectController.js";
 
 import protect from "../middleware/authMiddleware.js";
@@ -27,6 +29,25 @@ router.put(
   protect,
   adminOnly,
   addMember
+);
+router.put(
+  "/:id",
+  protect,
+  adminOnly,
+  editProject
+);
+
+router.delete(
+  "/:id",
+  protect,
+  adminOnly,
+  deleteProject
+);
+router.get(
+  "/:id/members",
+  protect,
+  adminOnly,
+  getProjectMembers
 );
 
 // GET PROJECTS

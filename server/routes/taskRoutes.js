@@ -5,6 +5,7 @@ import {
   getTasks,
   updateTaskStatus,
   deleteTask,
+  editTask,
 } from "../controllers/taskController.js";
 
 import protect from "../middleware/authMiddleware.js";
@@ -33,11 +34,16 @@ router.get(
 
 // UPDATE STATUS
 router.put(
+  "/edit/:id",
+  protect,
+  adminOnly,
+  editTask
+);
+router.put(
   "/:id",
   protect,
   updateTaskStatus
 );
-
 
 // DELETE TASK
 router.delete(

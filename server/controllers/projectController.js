@@ -147,3 +147,108 @@ async (req, res) => {
     });
   }
 };
+// EDIT PROJECT
+export const editProject = async (
+  req,
+  res
+) => {
+
+  try {
+
+    const project =
+      await Project.findById(
+        req.params.id
+      );
+
+    if (!project) {
+
+      return res.status(404).json({
+
+        message:
+          "Project not found",
+
+      });
+    }
+
+    project.name =
+      req.body.name ||
+      project.name;
+
+    project.description =
+      req.body.description ||
+      project.description;
+
+    const updatedProject =
+      await project.save();
+
+    res.json(updatedProject);
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+// DELETE PROJECT
+export const deleteProject =
+async (req, res) => {
+
+  try {
+
+    const project =
+      await Project.findById(
+        req.params.id
+      );
+
+    if (!project) {
+
+      return res.status(404).json({
+
+        message:
+          "Project not found",
+
+      });
+    }
+
+    await project.deleteOne();
+
+    res.json({
+
+      message:
+        "Project deleted",
+
+    });
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+// VIEW MEMBERS
+export const getProjectMembers =
+async (req, res) => {
+
+  try {
+
+    const project =
+      await Project.findById(
+        req.params.id
+      )
+
+      .populate(
+        "members",
+        "name email role"
+      );
+
+    res.json(project.members);
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};

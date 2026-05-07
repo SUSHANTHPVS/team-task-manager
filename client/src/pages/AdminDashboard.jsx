@@ -8,6 +8,50 @@ const AdminDashboard = () => {
 
   const [stats, setStats] =
     useState({});
+    
+    const deleteTask = async (id) => {
+
+  try {
+
+    await API.delete(
+      `/tasks/${id}`
+    );
+
+    fetchTasks();
+
+  } catch (error) {
+
+    console.log(error);
+  }
+};
+const editTask = async (task) => {
+
+  const title =
+    prompt(
+      "Edit Title",
+      task.title
+    );
+
+  if (!title) return;
+
+  try {
+
+    await API.put(
+
+      `/tasks/edit/${task._id}`,
+
+      {
+        title,
+      }
+    );
+
+    fetchTasks();
+
+  } catch (error) {
+
+    console.log(error);
+  }
+};
 
   const fetchStats = async () => {
 
