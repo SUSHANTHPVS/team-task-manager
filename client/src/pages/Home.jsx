@@ -1,42 +1,66 @@
-import { Link } from "react-router-dom";
+import {
+  Link,
+} from "react-router-dom";
 
 const Home = () => {
 
   return (
 
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-gray-100 flex flex-col justify-center items-center p-10">
 
-      <div className="max-w-5xl w-full grid md:grid-cols-2 gap-8">
+      <h1 className="text-6xl font-bold text-blue-600 mb-4">
 
+        TaskManager
+
+      </h1>
+
+
+      <p className="text-xl text-gray-700 mb-12 text-center">
+
+        Team Collaboration & Project Management Platform
+
+      </p>
+
+
+      <div className="grid md:grid-cols-2 gap-10 w-full max-w-5xl">
 
         {/* USER PORTAL */}
-        <div className="bg-white rounded-2xl shadow-xl p-10 text-center">
 
-          <h1 className="text-4xl font-bold mb-4 text-blue-600">
+        <div className="bg-white p-10 rounded-2xl shadow-lg">
+
+          <h2 className="text-3xl font-bold mb-4 text-black">
+
             User Portal
-          </h1>
 
-          <p className="text-gray-600 mb-8">
-            Manage your assigned tasks, projects,
-            and track your work progress.
+          </h2>
+
+          <p className="text-gray-600 mb-6">
+
+            Manage assigned tasks,
+            projects, and work progress.
+
           </p>
 
 
-          <div className="space-y-4">
+          <div className="flex gap-4">
 
             <Link
               to="/login"
-              className="block w-full bg-blue-600 text-white py-3 rounded-xl font-semibold"
+              className="bg-blue-600 text-white px-6 py-3 rounded-xl"
             >
+
               User Login
+
             </Link>
 
 
             <Link
               to="/signup"
-              className="block w-full border border-blue-600 text-blue-600 py-3 rounded-xl font-semibold"
+              className="bg-green-600 text-white px-6 py-3 rounded-xl"
             >
+
               User Signup
+
             </Link>
 
           </div>
@@ -45,31 +69,42 @@ const Home = () => {
 
 
         {/* ADMIN PORTAL */}
-        <div className="bg-white rounded-2xl shadow-xl p-10 text-center">
 
-          <h1 className="text-4xl font-bold mb-4 text-red-600">
+        <div className="bg-white p-10 rounded-2xl shadow-lg">
+
+          <h2 className="text-3xl font-bold mb-4 text-black">
+
             Admin Portal
-          </h1>
 
-          <p className="text-gray-600 mb-8">
-            Manage teams, projects, tasks,
-            users, and monitor overall progress.
+          </h2>
+
+          <p className="text-gray-600 mb-6">
+
+            Manage teams, projects,
+            tasks, and analytics.
+
           </p>
-<div className="space-y-4">
+
+
+          <div className="flex gap-4">
 
             <Link
               to="/admin/login"
-              className="block w-full bg-red-600 text-white py-3 rounded-xl font-semibold"
+              className="bg-blue-600 text-white px-6 py-3 rounded-xl"
             >
+
               Admin Login
+
             </Link>
 
 
             <Link
               to="/admin/signup"
-              className="block w-full border border-red-600 text-red-600 py-3 rounded-xl font-semibold"
+              className="bg-red-600 text-white px-6 py-3 rounded-xl"
             >
+
               Admin Signup
+
             </Link>
 
           </div>
@@ -77,6 +112,14 @@ const Home = () => {
         </div>
 
       </div>
+
+
+      <footer className="mt-20 text-gray-500 text-center">
+
+        © 2026 TaskManager.
+        All rights reserved.
+
+      </footer>
 
     </div>
   );

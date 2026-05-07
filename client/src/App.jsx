@@ -1,92 +1,82 @@
 import {
-  BrowserRouter,
   Routes,
   Route,
 } from "react-router-dom";
 
 import Home from "./pages/Home";
+
 import Login from "./pages/Login";
+
 import Signup from "./pages/Signup";
 
-import Projects from "./pages/Projects";
-import Tasks from "./pages/Tasks";
-import ProtectedRoute from "./components/ProtectedRoute";
-import AdminLogin 
-from "./pages/AdminLogin";
+import AdminLogin from "./pages/AdminLogin";
 
 import AdminSignup from "./pages/AdminSignup";
 
-import AdminDashboard
-from "./pages/AdminDashboard";
+import AdminDashboard from "./pages/AdminDashboard";
 
-import MemberDashboard
-from "./pages/MemberDashboard";
+import MemberDashboard from "./pages/MemberDashboard";
 
-
-
+import Projects from "./pages/Projects";
 
 function App() {
 
   return (
 
-    
+    <Routes>
 
-      <Routes>
+      {/* HOME */}
 
-  <Route
-  path="/"
-  element={<Home />}
-/>
-<Route
-    path="/login"
-    element={<Login />}
-  />
+      <Route
+        path="/"
+        element={<Home />}
+      />
 
-  <Route
-    path="/signup"
-    element={<Signup />}
-  />
 
- 
-  <Route
-    path="/projects"
-    element={
-      <ProtectedRoute>
-        <Projects />
-      </ProtectedRoute>
-    }
-  />
+      {/* USER */}
 
-  <Route
-    path="/tasks"
-    element={
-      <ProtectedRoute>
-        <Tasks />
-      </ProtectedRoute>
-    }
-  />
-  <Route
-  path="/admin/login"
-  element={<AdminLogin />}
-/>
+      <Route
+        path="/login"
+        element={<Login />}
+      />
 
-<Route
-  path="/admin/signup"
-  element={<AdminSignup />}
-/>
+      <Route
+        path="/signup"
+        element={<Signup />}
+      />
 
-<Route
-  path="/admin/dashboard"
-  element={<AdminDashboard />}
-/>
-<Route
-  path="/dashboard"
-  element={<MemberDashboard />}
-/>
+      <Route
+        path="/dashboard"
+        element={<MemberDashboard />}
+      />
 
-</Routes>
 
-   
+      {/* ADMIN */}
+
+      <Route
+        path="/admin/login"
+        element={<AdminLogin />}
+      />
+
+      <Route
+        path="/admin/signup"
+        element={<AdminSignup />}
+      />
+
+      <Route
+        path="/admin/dashboard"
+        element={<AdminDashboard />}
+      />
+
+
+      {/* PROJECTS */}
+
+      <Route
+        path="/projects"
+        element={<Projects />}
+      />
+
+    </Routes>
   );
 }
 

@@ -1,4 +1,4 @@
-TaskFlow 🚀
+Task Manager🚀
 
 A full-stack collaborative task management application inspired by tools like Trello and Asana. This platform enables teams to create projects, assign tasks, manage workflows, and track progress efficiently with role-based access control.
 
