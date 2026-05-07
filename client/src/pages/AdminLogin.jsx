@@ -4,12 +4,9 @@ import { useNavigate } from "react-router-dom";
 
 import API from "../services/api";
 
-const AdminSignup = () => {
+const AdminLogin = () => {
 
   const navigate = useNavigate();
-
-  const [name, setName] =
-    useState("");
 
   const [email, setEmail] =
     useState("");
@@ -24,30 +21,39 @@ const AdminSignup = () => {
 
     try {
 
-      await API.post(
-        "/auth/register",
-        {
+      const { data } =
+        await API.post(
+          "/auth/login",
+          {
+            email,
+            password,
+          }
+        );
 
-          name,
-          email,
-          password,
+      if (data.role !== "admin") {
 
-          role: "admin",
+        return alert(
+          "Not an admin account"
+        );
+      }
 
-        }
+      localStorage.setItem(
+        "token",
+        data.token
       );
 
-      alert(
-        "Admin Registered Successfully"
+      localStorage.setItem(
+        "role",
+        data.role
       );
 
-      navigate("/admin/login");
+      navigate("/admin/dashboard");
 
     } catch (error) {
 
       console.log(error);
 
-      alert("Signup Failed");
+      alert("Login Failed");
     }
   };
 
@@ -62,22 +68,9 @@ const AdminSignup = () => {
 
         <h1 className="text-3xl font-bold text-center">
 
-          Admin Signup
+          Admin Login
 
         </h1>
-
-
-        <input
-          type="text"
-          placeholder="Name"
-          className="w-full border p-3 rounded-lg"
-
-          value={name}
-
-          onChange={(e) =>
-            setName(e.target.value)
-          }
-        />
 
 
         <input
@@ -110,7 +103,7 @@ const AdminSignup = () => {
           type="submit"
           className="w-full bg-red-600 text-white p-3 rounded-lg"
         >
-          Admin Signup
+          Admin Login
         </button>
 
       </form>
@@ -119,4 +112,4 @@ const AdminSignup = () => {
   );
 };
 
-export default AdminSignup;
+export default AdminLogin;
