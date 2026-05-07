@@ -1,47 +1,70 @@
-import express from "express";
+import mongoose from "mongoose";
 
-import {
-  createTask,
-  getTasks,
-  updateTaskStatus,
-  deleteTask,
-} from "../controllers/taskController.js";
+const taskSchema =
+  new mongoose.Schema(
 
-import protect from "../middleware/authMiddleware.js";
+    {
 
-const router = express.Router();
+      title: {
+        type: String,
+        required: true,
+      },
+
+      description: {
+        type: String,
+      },
+
+      status: {
+        type: String,
+        enum: [
+          "Pending",
+          "In Progress",
+          "Completed",
+        ],
+        default: "Pending",
+      },
+
+      priority: {
+        type: String,
+        enum: [
+          "Low",
+          "Medium",
+          "High",
+        ],
+        default: "Medium",
+      },
+
+      dueDate: {
+        type: Date,
+      },
+
+      assignedTo: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+
+      project: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Project",
+      },
+
+      createdBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+
+    },
+
+    {
+      timestamps: true,
+    }
+  );
 
 
-// CREATE TASK
-router.post(
-  "/",
-  protect,
-  createTask
+const Task = mongoose.model(
+  "Task",
+  taskSchema
 );
 
 
-// GET TASKS
-router.get(
-  "/:projectId",
-  protect,
-  getTasks
-);
-
-
-// UPDATE TASK
-router.put(
-  "/:id",
-  protect,
-  updateTaskStatus
-);
-
-
-// DELETE TASK
-router.delete(
-  "/:id",
-  protect,
-  deleteTask
-);
-
-
-export default router;
+export default Task;
