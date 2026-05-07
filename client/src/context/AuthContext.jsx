@@ -6,57 +6,122 @@ import {
 
 import API from "../services/api";
 
-
-const AuthContext = createContext();
-
-
-export const AuthProvider = ({ children }) => {
-
-  const [user, setUser] = useState(
-    localStorage.getItem("token") || null
-  );
+const AuthContext =
+  createContext();
 
 
-  // LOGIN
-  const login = async (email, password) => {
+// PROVIDER
+export const AuthProvider = ({
+  children,
+}) => {
 
-    const { data } = await API.post(
-      "/auth/login",
-      {
-        email,
-        password,
-      }
+  const [user, setUser] =
+    useState(
+
+      localStorage.getItem(
+        "token"
+      ) || null
     );
 
+
+  // USER LOGIN
+  const login = async (
+    email,
+    password
+  ) => {
+
+    const { data } =
+      await API.post(
+
+        "/auth/login",
+
+        {
+          email,
+          password,
+        }
+      );
+
+    // SAVE TOKEN
     localStorage.setItem(
       "token",
       data.token
     );
 
-    setUser(data.token);
+    // SAVE ROLE
+    localStorage.setItem(
+      "role",
+      data.role || "member"
+    );
+
+    setUser(data);
+  };
+
+
+  // ADMIN LOGIN
+  const adminLogin = async (
+    email,
+    password
+  ) => {
+
+    const { data } =
+      await API.post(
+
+        "/auth/login",
+
+        {
+          email,
+          password,
+        }
+      );
+
+    // CHECK ADMIN
+    if (
+      data.role !== "admin"
+    ) {
+
+      throw new Error(
+        "Not an admin account"
+      );
+    }
+
+    // SAVE TOKEN
+    localStorage.setItem(
+      "token",
+      data.token
+    );
+
+    // SAVE ROLE
+    localStorage.setItem(
+      "role",
+      data.role
+    );
+
+    setUser(data);
   };
 
 
   // SIGNUP
   const signup = async (
+
     name,
     email,
-    password
+    password,
+    role = "member"
+
   ) => {
 
-    const { data } = await API.post(
-      "/auth/register",
-      {
-        name,
-        email,
-        password,
-      }
-    );
+    const { data } =
+      await API.post(
 
-    localStorage.setItem(
-      "token",
-      data.token
-    );
+        "/auth/register",
+
+        {
+          name,
+          email,
+          password,
+          role,
+        }
+      );
 
     return data;
   };
@@ -65,7 +130,13 @@ export const AuthProvider = ({ children }) => {
   // LOGOUT
   const logout = () => {
 
-    localStorage.removeItem("token");
+    localStorage.removeItem(
+      "token"
+    );
+
+    localStorage.removeItem(
+      "role"
+    );
 
     setUser(null);
 
@@ -76,18 +147,30 @@ export const AuthProvider = ({ children }) => {
   return (
 
     <AuthContext.Provider
+
       value={{
+
         user,
+
         login,
+
+        adminLogin,
+
         signup,
+
         logout,
+
       }}
     >
+
       {children}
+
     </AuthContext.Provider>
   );
 };
 
 
+// USE AUTH
 export const useAuth = () =>
+
   useContext(AuthContext);
