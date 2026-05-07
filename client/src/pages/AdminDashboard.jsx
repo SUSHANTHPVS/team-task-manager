@@ -3,326 +3,93 @@ import { useEffect, useState } from "react";
 import API from "../services/api";
 
 import Sidebar from "../components/Sidebar";
-const [title, setTitle] =
-  useState("");
-
-const [description, setDescription] =
-  useState("");
-
-const [priority, setPriority] =
-  useState("Medium");
-
-const [dueDate, setDueDate] =
-  useState("");
-
-const [assignedTo, setAssignedTo] =
-  useState("");
-
-const [project, setProject] =
-  useState("");
-
-const [users, setUsers] =
-  useState([]);
-
-const [projects, setProjects] =
-  useState([]);
 
 const AdminDashboard = () => {
 
+  // STATES
   const [stats, setStats] =
     useState({});
-    
-    const deleteTask = async (id) => {
 
-  try {
+  const [tasks, setTasks] =
+    useState([]);
 
-    await API.delete(
-      `/tasks/${id}`
-    );
+  const [users, setUsers] =
+    useState([]);
 
-    fetchTasks();
+  const [projects, setProjects] =
+    useState([]);
 
-  } catch (error) {
+  const [title, setTitle] =
+    useState("");
 
-    console.log(error);
-  }
-};
-<form
-  onSubmit={createTask}
+  const [description, setDescription] =
+    useState("");
 
-  className="bg-white p-6 rounded-xl shadow mb-10 space-y-4"
->
+  const [priority, setPriority] =
+    useState("Medium");
 
-  <h2 className="text-2xl font-bold text-black">
+  const [dueDate, setDueDate] =
+    useState("");
 
-    Assign Task
+  const [assignedTo, setAssignedTo] =
+    useState("");
 
-  </h2>
+  const [project, setProject] =
+    useState("");
 
 
-  <input
-    type="text"
-    placeholder="Task Title"
+  // FETCH TASKS
+  const fetchTasks = async () => {
 
-    className="w-full border p-3 rounded-lg"
+    try {
 
-    value={title}
+      const { data } =
+        await API.get("/tasks");
 
-    onChange={(e) =>
-      setTitle(e.target.value)
+      setTasks(data);
+
+    } catch (error) {
+
+      console.log(error);
     }
-  />
+  };
 
 
-  <textarea
-    placeholder="Description"
+  // FETCH USERS
+  const fetchUsers = async () => {
 
-    className="w-full border p-3 rounded-lg"
+    try {
 
-    value={description}
+      const { data } =
+        await API.get("/auth/users");
 
-    onChange={(e) =>
-      setDescription(
-        e.target.value
-      )
+      setUsers(data);
+
+    } catch (error) {
+
+      console.log(error);
     }
-  ></textarea>
+  };
 
 
-  {/* PRIORITY */}
+  // FETCH PROJECTS
+  const fetchProjects = async () => {
 
-  <select
-    className="w-full border p-3 rounded-lg"
+    try {
 
-    value={priority}
+      const { data } =
+        await API.get("/projects");
 
-    onChange={(e) =>
-      setPriority(
-        e.target.value
-      )
+      setProjects(data);
+
+    } catch (error) {
+
+      console.log(error);
     }
-  >
+  };
 
-    <option>
-      Low
-    </option>
 
-    <option>
-      Medium
-    </option>
-
-    <option>
-      High
-    </option>
-
-  </select>
-
-
-  {/* DUE DATE */}
-
-  <input
-    type="date"
-
-    className="w-full border p-3 rounded-lg"
-
-    value={dueDate}
-
-    onChange={(e) =>
-      setDueDate(
-        e.target.value
-      )
-    }
-  />
-
-
-  {/* SELECT USER */}
-
-  <select
-    className="w-full border p-3 rounded-lg"
-
-    value={assignedTo}
-
-    onChange={(e) =>
-      setAssignedTo(
-        e.target.value
-      )
-    }
-  >
-
-    <option value="">
-      Select Team Member
-    </option>
-
-    {
-
-      users.map((user) => (
-
-        <option
-          key={user._id}
-          value={user._id}
-        >
-
-          {user.name}
-
-          {" - "}
-
-          {user.email}
-
-        </option>
-      ))
-    }
-
-  </select>
-
-
-  {/* SELECT PROJECT */}
-
-  <select
-    className="w-full border p-3 rounded-lg"
-
-    value={project}
-
-    onChange={(e) =>
-      setProject(
-        e.target.value
-      )
-    }
-  >
-
-    <option value="">
-      Select Project
-    </option>
-
-    {
-
-      projects.map((project) => (
-
-        <option
-          key={project._id}
-          value={project._id}
-        >
-
-          {project.name}
-
-        </option>
-      ))
-    }
-
-  </select>
-
-
-  <button
-    type="submit"
-
-    className="bg-blue-600 text-white px-6 py-3 rounded-lg"
-  >
-
-    Assign Task
-
-  </button>
-
-</form>
-const createTask = async (
-  e
-) => {
-
-  e.preventDefault();
-
-  try {
-
-    await API.post(
-
-      "/tasks",
-
-      {
-
-        title,
-
-        description,
-
-        priority,
-
-        dueDate,
-
-        assignedTo,
-
-        project,
-
-      }
-    );
-
-    alert(
-      "Task Assigned Successfully"
-    );
-
-    fetchTasks();
-
-  } catch (error) {
-
-    console.log(error);
-  }
-};
-const fetchProjects = async () => {
-
-  try {
-
-    const { data } =
-      await API.get(
-        "/projects"
-      );
-
-    setProjects(data);
-
-  } catch (error) {
-
-    console.log(error);
-  }
-};
-const fetchUsers = async () => {
-
-  try {
-
-    const { data } =
-      await API.get(
-        "/auth/users"
-      );
-
-    setUsers(data);
-
-  } catch (error) {
-
-    console.log(error);
-  }
-};
-const editTask = async (task) => {
-
-  const title =
-    prompt(
-      "Edit Title",
-      task.title
-    );
-
-  if (!title) return;
-
-  try {
-
-    await API.put(
-
-      `/tasks/edit/${task._id}`,
-
-      {
-        title,
-      }
-    );
-
-    fetchTasks();
-
-  } catch (error) {
-
-    console.log(error);
-  }
-};
-
+  // FETCH STATS
   const fetchStats = async () => {
 
     try {
@@ -340,6 +107,102 @@ const editTask = async (task) => {
     }
   };
 
+
+  // CREATE TASK
+  const createTask = async (
+    e
+  ) => {
+
+    e.preventDefault();
+
+    try {
+
+      await API.post(
+        "/tasks",
+        {
+          title,
+          description,
+          priority,
+          dueDate,
+          assignedTo,
+          project,
+        }
+      );
+
+      alert(
+        "Task Assigned Successfully"
+      );
+
+      setTitle("");
+      setDescription("");
+      setPriority("Medium");
+      setDueDate("");
+      setAssignedTo("");
+      setProject("");
+
+      fetchTasks();
+
+    } catch (error) {
+
+      console.log(error);
+    }
+  };
+
+
+  // DELETE TASK
+  const deleteTask = async (
+    id
+  ) => {
+
+    try {
+
+      await API.delete(
+        `/tasks/${id}`
+      );
+
+      fetchTasks();
+
+    } catch (error) {
+
+      console.log(error);
+    }
+  };
+
+
+  // EDIT TASK
+  const editTask = async (
+    task
+  ) => {
+
+    const updatedTitle =
+      prompt(
+        "Edit Title",
+        task.title
+      );
+
+    if (!updatedTitle) return;
+
+    try {
+
+      await API.put(
+
+        `/tasks/edit/${task._id}`,
+
+        {
+          title: updatedTitle,
+        }
+      );
+
+      fetchTasks();
+
+    } catch (error) {
+
+      console.log(error);
+    }
+  };
+
+
+  // USE EFFECT
   useEffect(() => {
 
     fetchStats();
@@ -352,6 +215,7 @@ const editTask = async (task) => {
 
   }, []);
 
+
   return (
 
     <div className="flex">
@@ -360,12 +224,14 @@ const editTask = async (task) => {
 
       <div className="flex-1 p-6 bg-gray-100 min-h-screen">
 
-        <h1 className="text-4xl font-bold mb-8">
+        <h1 className="text-4xl font-bold mb-8 text-black">
 
           Admin Dashboard
 
         </h1>
 
+
+        {/* STATS */}
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
 
@@ -417,6 +283,251 @@ const editTask = async (task) => {
             <p className="text-3xl mt-4">
               {stats.overdue || 0}
             </p>
+
+          </div>
+
+        </div>
+
+
+        {/* ASSIGN TASK FORM */}
+
+        <form
+          onSubmit={createTask}
+          className="bg-white p-6 rounded-xl shadow mt-10 space-y-4"
+        >
+
+          <h2 className="text-2xl font-bold">
+
+            Assign Task
+
+          </h2>
+
+
+          <input
+            type="text"
+            placeholder="Task Title"
+            className="w-full border p-3 rounded-lg"
+            value={title}
+            onChange={(e) =>
+              setTitle(e.target.value)
+            }
+          />
+
+
+          <textarea
+            placeholder="Description"
+            className="w-full border p-3 rounded-lg"
+            value={description}
+            onChange={(e) =>
+              setDescription(
+                e.target.value
+              )
+            }
+          ></textarea>
+
+
+          <select
+            className="w-full border p-3 rounded-lg"
+            value={priority}
+            onChange={(e) =>
+              setPriority(
+                e.target.value
+              )
+            }
+          >
+
+            <option>
+              Low
+            </option>
+
+            <option>
+              Medium
+            </option>
+
+            <option>
+              High
+            </option>
+
+          </select>
+
+
+          <input
+            type="date"
+            className="w-full border p-3 rounded-lg"
+            value={dueDate}
+            onChange={(e) =>
+              setDueDate(
+                e.target.value
+              )
+            }
+          />
+
+
+          {/* USERS */}
+
+          <select
+            className="w-full border p-3 rounded-lg"
+            value={assignedTo}
+            onChange={(e) =>
+              setAssignedTo(
+                e.target.value
+              )
+            }
+          >
+
+            <option value="">
+              Select Team Member
+            </option>
+
+            {
+
+              users.map((user) => (
+
+                <option
+                  key={user._id}
+                  value={user._id}
+                >
+
+                  {user.name}
+                  {" - "}
+                  {user.email}
+
+                </option>
+              ))
+            }
+
+          </select>
+
+
+          {/* PROJECTS */}
+
+          <select
+            className="w-full border p-3 rounded-lg"
+            value={project}
+            onChange={(e) =>
+              setProject(
+                e.target.value
+              )
+            }
+          >
+
+            <option value="">
+              Select Project
+            </option>
+
+            {
+
+              projects.map((project) => (
+
+                <option
+                  key={project._id}
+                  value={project._id}
+                >
+
+                  {project.name}
+
+                </option>
+              ))
+            }
+
+          </select>
+
+
+          <button
+            type="submit"
+            className="bg-blue-600 text-white px-6 py-3 rounded-lg"
+          >
+
+            Assign Task
+
+          </button>
+
+        </form>
+
+
+        {/* TASKS */}
+
+        <div className="mt-10">
+
+          <h2 className="text-3xl font-bold mb-6">
+
+            All Tasks
+
+          </h2>
+
+
+          <div className="space-y-4">
+
+            {tasks.map((task) => (
+
+              <div
+                key={task._id}
+                className="bg-white p-5 rounded-xl shadow"
+              >
+
+                <h3 className="text-2xl font-bold">
+
+                  {task.title}
+
+                </h3>
+
+
+                <p className="text-gray-700 mt-2">
+
+                  {task.description}
+
+                </p>
+
+
+                <div className="flex gap-3 mt-4 flex-wrap">
+
+                  <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-lg">
+
+                    {task.priority}
+
+                  </span>
+
+
+                  <span className="bg-green-100 text-green-700 px-3 py-1 rounded-lg">
+
+                    {task.status}
+
+                  </span>
+
+                </div>
+
+
+                <div className="flex gap-3 mt-5">
+
+                  <button
+                    onClick={() =>
+                      editTask(task)
+                    }
+                    className="bg-yellow-500 text-white px-4 py-2 rounded-lg"
+                  >
+
+                    Edit
+
+                  </button>
+
+
+                  <button
+                    onClick={() =>
+                      deleteTask(
+                        task._id
+                      )
+                    }
+                    className="bg-red-600 text-white px-4 py-2 rounded-lg"
+                  >
+
+                    Delete
+
+                  </button>
+
+                </div>
+
+              </div>
+            ))}
 
           </div>
 
