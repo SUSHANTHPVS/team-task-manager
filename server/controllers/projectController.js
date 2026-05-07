@@ -110,3 +110,53 @@ export const getProjects = async (
     });
   }
 };
+export const addMember = async (
+  req,
+  res
+) => {
+
+  try {
+
+    const project =
+      await Project.findById(
+        req.params.id
+      );
+
+    if (!project) {
+
+      return res.status(404).json({
+        message: "Project not found",
+      });
+    }
+
+
+    // ONLY ADMIN CAN ADD MEMBERS
+    if (
+
+      project.admin.toString()
+      !== req.user._id.toString()
+
+    ) {
+
+      return res.status(403).json({
+        message: "Admin only",
+      });
+    }
+
+
+    // ADD MEMBER
+    project.members.push(
+      req.body.userId
+    );
+
+    await project.save();
+
+    res.json(project);
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
