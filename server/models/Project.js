@@ -1,29 +1,43 @@
-import express from "express";
+import mongoose from "mongoose";
 
-import {
-  createProject,
-  getProjects,
-} from "../controllers/projectController.js";
+const projectSchema =
+  new mongoose.Schema(
 
-import protect from "../middleware/authMiddleware.js";
+    {
 
-const router = express.Router();
+      name: {
+        type: String,
+        required: true,
+      },
+
+      description: {
+        type: String,
+      },
+
+      admin: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+
+      members: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+      ],
+
+    },
+
+    {
+      timestamps: true,
+    }
+  );
 
 
-// CREATE PROJECT
-router.post(
-  "/",
-  protect,
-  createProject
+const Project = mongoose.model(
+  "Project",
+  projectSchema
 );
 
 
-// GET PROJECTS
-router.get(
-  "/",
-  protect,
-  getProjects
-);
-
-
-export default router;
+export default Project;
