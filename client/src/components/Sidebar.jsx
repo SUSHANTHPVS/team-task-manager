@@ -57,7 +57,7 @@ const Sidebar = () => {
 
     {
       name: "Projects",
-      path: "/admin/projects",
+      path: "/projects",
     },
 
   ];

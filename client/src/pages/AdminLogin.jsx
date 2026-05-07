@@ -105,6 +105,20 @@ const AdminLogin = () => {
         >
           Admin Login
         </button>
+        <p className="text-center mt-4 text-gray-600">
+
+  Not registered?{" "}
+
+  <Link
+    to="/admin/signup"
+    className="text-blue-600 font-bold hover:underline"
+  >
+
+    Sign Up
+
+  </Link>
+
+</p>
 
       </form>
 

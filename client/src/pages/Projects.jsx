@@ -1,15 +1,25 @@
 import { useEffect, useState } from "react";
 
 import API from "../services/api";
+
 import Sidebar from "../components/Sidebar";
 
 const Projects = () => {
 
-  const [projects, setProjects] = useState([]);
+  const role =
+    localStorage.getItem("role");
 
-  const [name, setName] = useState("");
+  const [projects, setProjects] =
+    useState([]);
 
-  const [description, setDescription] = useState("");
+  const [name, setName] =
+    useState("");
+
+  const [description, setDescription] =
+    useState("");
+
+  const [userId, setUserId] =
+    useState("");
 
 
   // FETCH PROJECTS
@@ -17,7 +27,8 @@ const Projects = () => {
 
     try {
 
-      const { data } = await API.get("/projects");
+      const { data } =
+        await API.get("/projects");
 
       setProjects(data);
 
@@ -35,13 +46,94 @@ const Projects = () => {
 
     try {
 
-      await API.post("/projects", {
-        name,
-        description,
-      });
+      await API.post(
+        "/projects",
+        {
+          name,
+          description,
+        }
+      );
 
       setName("");
       setDescription("");
+
+      fetchProjects();
+
+    } catch (error) {
+
+      console.log(error);
+    }
+  };
+
+
+  // DELETE PROJECT
+  const deleteProject = async (id) => {
+
+    try {
+
+      await API.delete(
+        `/projects/${id}`
+      );
+
+      fetchProjects();
+
+    } catch (error) {
+
+      console.log(error);
+    }
+  };
+
+
+  // EDIT PROJECT
+  const editProject = async (
+    project
+  ) => {
+
+    const updatedName =
+      prompt(
+        "Edit Project Name",
+        project.name
+      );
+
+    if (!updatedName) return;
+
+    try {
+
+      await API.put(
+
+        `/projects/${project._id}`,
+
+        {
+          name: updatedName,
+        }
+      );
+
+      fetchProjects();
+
+    } catch (error) {
+
+      console.log(error);
+    }
+  };
+
+
+  // ADD MEMBER
+  const addMember = async (
+    projectId
+  ) => {
+
+    try {
+
+      await API.put(
+
+        `/projects/${projectId}/members`,
+
+        {
+          userId,
+        }
+      );
+
+      setUserId("");
 
       fetchProjects();
 
@@ -63,52 +155,84 @@ const Projects = () => {
 
     <div className="flex">
 
-      {/* Sidebar */}
+      {/* SIDEBAR */}
+
       <Sidebar />
 
 
-      {/* Main Content */}
+      {/* MAIN CONTENT */}
+
       <div className="flex-1 min-h-screen bg-gray-100 p-6">
 
-        <h1 className="text-3xl font-bold mb-6 dark:text-white">
+        <h1 className="text-4xl font-bold mb-8">
+
           Projects
+
         </h1>
 
 
-        {/* Create Project Form */}
-        <form
-          onSubmit={createProject}
-          className="bg-white p-6 rounded-xl shadow mb-8 space-y-4"
-        >
+        {/* ADMIN CREATE PROJECT */}
 
-          <input
-            type="text"
-            placeholder="Project Name"
-            className="w-full border p-3 rounded-lg"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
+        {
+          role === "admin" && (
 
+            <form
+              onSubmit={createProject}
+              className="bg-white p-6 rounded-xl shadow mb-8 space-y-4"
+            >
 
-          <textarea
-            placeholder="Project Description"
-            className="w-full border p-3 rounded-lg"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          ></textarea>
+              <h2 className="text-2xl font-bold">
+
+                Create Project
+
+              </h2>
 
 
-          <button
-            type="submit"
-            className="bg-blue-600 text-white px-6 py-3 rounded-lg"
-          >
-            Create Project
-          </button>
+              <input
+                type="text"
+                placeholder="Project Name"
 
-        </form>
+                className="w-full border p-3 rounded-lg"
+
+                value={name}
+
+                onChange={(e) =>
+                  setName(e.target.value)
+                }
+              />
 
 
-        {/* Project Cards */}
+              <textarea
+                placeholder="Project Description"
+
+                className="w-full border p-3 rounded-lg"
+
+                value={description}
+
+                onChange={(e) =>
+                  setDescription(
+                    e.target.value
+                  )
+                }
+              ></textarea>
+
+
+              <button
+                type="submit"
+                className="bg-blue-600 text-white px-6 py-3 rounded-lg"
+              >
+
+                Create Project
+
+              </button>
+
+            </form>
+          )
+        }
+
+
+        {/* PROJECT CARDS */}
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
           {projects.map((project) => (
@@ -118,16 +242,139 @@ const Projects = () => {
               className="bg-white p-6 rounded-xl shadow"
             >
 
-              <h2 className="text-2xl font-bold dark:text-white">
+              <h2 className="text-2xl font-bold">
+
                 {project.name}
+
               </h2>
 
-              <p className="text-gray-600 dark:text-gray-300 mt-3">
+
+              <p className="text-gray-600 mt-3">
+
                 {project.description}
+
               </p>
 
-            </div>
 
+              {/* TEAM MEMBERS */}
+
+              <div className="mt-5">
+
+                <h3 className="font-bold mb-3">
+
+                  Team Members
+
+                </h3>
+
+
+                {
+                  project.members?.map(
+                    (member) => (
+
+                      <div
+                        key={member._id}
+                        className="bg-gray-100 p-2 rounded mb-2"
+                      >
+
+                        {member.name}
+
+                        {" - "}
+
+                        {member.email}
+
+                      </div>
+                    )
+                  )
+                }
+
+              </div>
+
+
+              {/* ADMIN ACTIONS */}
+
+              {
+                role === "admin" && (
+
+                  <>
+
+                    {/* ADD MEMBER */}
+
+                    <div className="mt-5 flex gap-3">
+
+                      <input
+                        type="text"
+                        placeholder="Enter User ID"
+
+                        className="border p-2 rounded-lg flex-1"
+
+                        value={userId}
+
+                        onChange={(e) =>
+                          setUserId(
+                            e.target.value
+                          )
+                        }
+                      />
+
+
+                      <button
+
+                        onClick={() =>
+                          addMember(
+                            project._id
+                          )
+                        }
+
+                        className="bg-green-600 text-white px-4 py-2 rounded-lg"
+                      >
+
+                        Add
+
+                      </button>
+
+                    </div>
+
+
+                    {/* EDIT DELETE */}
+
+                    <div className="flex gap-3 mt-5">
+
+                      <button
+
+                        onClick={() =>
+                          editProject(project)
+                        }
+
+                        className="bg-yellow-500 text-white px-4 py-2 rounded-lg"
+                      >
+
+                        Edit
+
+                      </button>
+
+
+                      <button
+
+                        onClick={() =>
+                          deleteProject(
+                            project._id
+                          )
+                        }
+
+                        className="bg-red-600 text-white px-4 py-2 rounded-lg"
+                      >
+
+                        Delete
+
+                      </button>
+
+                    </div>
+
+                  </>
+                )
+              }
+
+            </div>
           ))}
 
         </div>

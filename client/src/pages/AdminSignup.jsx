@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import API from "../services/api";
 
+import { Link } from "react-router-dom";
 const AdminSignup = () => {
 
   const navigate = useNavigate();
@@ -112,6 +113,20 @@ const AdminSignup = () => {
         >
           Admin Signup
         </button>
+        <p className="text-center mt-4 text-gray-600">
+
+  Already have an account?{" "}
+
+  <Link
+    to="/admin/login"
+    className="text-blue-600 font-bold hover:underline"
+  >
+
+    Login
+
+  </Link>
+
+</p>
 
       </form>
 
