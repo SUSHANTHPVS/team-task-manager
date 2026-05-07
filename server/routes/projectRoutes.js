@@ -4,9 +4,12 @@ import {
   createProject,
   getProjects,
   addMember,
+  removeMember,
 } from "../controllers/projectController.js";
 
 import protect from "../middleware/authMiddleware.js";
+import adminOnly
+from "../middleware/adminMiddleware.js";
 
 
 const router = express.Router();
@@ -16,11 +19,13 @@ const router = express.Router();
 router.post(
   "/",
   protect,
+  adminOnly,
   createProject
 );
 router.put(
   "/:id/members",
   protect,
+  adminOnly,
   addMember
 );
 
@@ -34,6 +39,12 @@ router.put(
   "/:id/members",
   protect,
   addMember
+);
+router.delete(
+  "/:id/members",
+  protect,
+  adminOnly,
+  removeMember
 );
 
 export default router;

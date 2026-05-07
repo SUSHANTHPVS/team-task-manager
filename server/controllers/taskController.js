@@ -46,6 +46,7 @@ export const createTask = async (
 
 
 // GET TASKS
+// GET TASKS
 export const getTasks = async (
   req,
   res
@@ -55,7 +56,7 @@ export const getTasks = async (
 
     let tasks;
 
-    // ADMIN
+    // ADMIN → ALL TASKS
     if (req.user.role === "admin") {
 
       tasks = await Task.find()
@@ -69,10 +70,9 @@ export const getTasks = async (
           "project",
           "name"
         );
-
     }
 
-    // MEMBER
+    // MEMBER → ONLY ASSIGNED TASKS
     else {
 
       tasks = await Task.find({
@@ -116,23 +116,44 @@ export const updateTaskStatus = async (
         req.params.id
       );
 
-
+    // TASK NOT FOUND
     if (!task) {
 
       return res.status(404).json({
-        message: "Task not found",
+
+        message:
+          "Task not found",
+
       });
     }
 
 
+    // MEMBER CAN UPDATE ONLY OWN TASK
+    if (
+
+      req.user.role !== "admin" &&
+
+      task.assignedTo.toString()
+      !== req.user._id.toString()
+
+    ) {
+
+      return res.status(403).json({
+
+        message:
+          "Not authorized",
+
+      });
+    }
+
+
+    // UPDATE STATUS
     task.status =
       req.body.status ||
       task.status;
 
-
     const updatedTask =
       await task.save();
-
 
     res.json(updatedTask);
 

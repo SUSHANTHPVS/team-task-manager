@@ -8,6 +8,8 @@ import {
 } from "../controllers/taskController.js";
 
 import protect from "../middleware/authMiddleware.js";
+import adminOnly
+from "../middleware/adminMiddleware.js";
 
 
 const router = express.Router();
@@ -17,9 +19,9 @@ const router = express.Router();
 router.post(
   "/",
   protect,
+  adminOnly,
   createTask
 );
-
 
 // GET TASKS
 router.get(
@@ -41,6 +43,7 @@ router.put(
 router.delete(
   "/:id",
   protect,
+  adminOnly,
   deleteTask
 );
 

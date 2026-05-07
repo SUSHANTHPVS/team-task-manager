@@ -2,20 +2,19 @@ import { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 
-import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 
+import API from "../services/api";
 
 const Login = () => {
 
-  const { login } = useAuth();
-
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState("");
+  const [email, setEmail] =
+    useState("");
 
-  const [password, setPassword] = useState("");
-
+  const [password, setPassword] =
+    useState("");
 
   const handleSubmit = async (e) => {
 
@@ -23,18 +22,53 @@ const Login = () => {
 
     try {
 
-      await login(email, password);
+      const { data } =
+        await API.post(
+          "/auth/login",
+          {
+            email,
+            password,
+          }
+        );
 
-      navigate("/dashboard");
+      // STORE TOKEN
+      localStorage.setItem(
+        "token",
+        data.token
+      );
+
+      // STORE ROLE
+      localStorage.setItem(
+        "role",
+        data.role
+      );
+
+
+      // ADMIN
+      if (data.role === "admin") {
+
+        navigate(
+          "/admin/dashboard"
+        );
+      }
+
+      // MEMBER
+      else {
+
+        navigate("/dashboard");
+      }
 
     } catch (error) {
 
       alert(
-        error.response?.data?.message || "Login Failed"
+
+        error.response?.data?.message ||
+
+        "Login Failed"
+
       );
     }
   };
-
 
   return (
 
@@ -43,7 +77,9 @@ const Login = () => {
       <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
 
         <h1 className="text-3xl font-bold text-center mb-6">
-          Login
+
+          User Login
+
         </h1>
 
 
@@ -56,8 +92,12 @@ const Login = () => {
             type="email"
             placeholder="Email"
             className="w-full border p-3 rounded-lg"
+
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+
+            onChange={(e) =>
+              setEmail(e.target.value)
+            }
           />
 
 
@@ -65,8 +105,12 @@ const Login = () => {
             type="password"
             placeholder="Password"
             className="w-full border p-3 rounded-lg"
+
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+
+            onChange={(e) =>
+              setPassword(e.target.value)
+            }
           />
 
 
@@ -78,18 +122,20 @@ const Login = () => {
           </button>
 
         </form>
+
+
         <p className="text-center mt-4 text-gray-600">
 
-  Not registered?{" "}
+          Not registered?{" "}
 
-  <Link
-    to="/signup"
-    className="text-blue-600 font-bold hover:underline"
-  >
-    Sign Up
-  </Link>
+          <Link
+            to="/signup"
+            className="text-blue-600 font-bold hover:underline"
+          >
+            Sign Up
+          </Link>
 
-</p>
+        </p>
 
       </div>
 

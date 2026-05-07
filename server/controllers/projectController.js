@@ -116,3 +116,34 @@ async (req, res) => {
     });
   }
 };
+export const removeMember =
+async (req, res) => {
+
+  try {
+
+    const project =
+      await Project.findById(
+        req.params.id
+      );
+
+    project.members =
+      project.members.filter(
+
+        (member) =>
+
+          member.toString()
+          !== req.body.userId
+
+      );
+
+    await project.save();
+
+    res.json(project);
+
+  } catch (error) {
+
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};

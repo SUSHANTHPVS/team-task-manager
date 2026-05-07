@@ -7,7 +7,7 @@ import {
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import Dashboard from "./pages/Dashboard";
+
 import Projects from "./pages/Projects";
 import Tasks from "./pages/Tasks";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -15,7 +15,11 @@ import AdminLogin from "./pages/AdminLogin";
 
 import AdminSignup from "./pages/AdminSignup";
 
-import AdminDashboard from "./pages/AdminDashboard";
+import AdminDashboard
+from "./pages/AdminDashboard";
+
+import MemberDashboard
+from "./pages/MemberDashboard";
 
 
 
@@ -37,15 +41,7 @@ function App() {
     element={<Signup />}
   />
 
-  <Route
-    path="/dashboard"
-    element={
-      <ProtectedRoute>
-        <Dashboard />
-      </ProtectedRoute>
-    }
-  />
-
+ 
   <Route
     path="/projects"
     element={
@@ -76,6 +72,10 @@ function App() {
 <Route
   path="/admin/dashboard"
   element={<AdminDashboard />}
+/>
+<Route
+  path="/dashboard"
+  element={<MemberDashboard />}
 />
 
 </Routes>
