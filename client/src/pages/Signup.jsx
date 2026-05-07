@@ -1,49 +1,81 @@
 import { useState } from "react";
 
-import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
+import { Link } from "react-router-dom";
+
+import API from "../services/api";
 
 const Signup = () => {
 
-  const { signup } = useAuth();
   const navigate = useNavigate();
 
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [name, setName] =
+    useState("");
 
+  const [email, setEmail] =
+    useState("");
+
+  const [password, setPassword] =
+    useState("");
 
   const handleSubmit = async (e) => {
 
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
+    try {
 
-    await signup(
-      name,
-      email,
-      password
-    );
+      const { data } =
+        await API.post(
+          "/auth/register",
+          {
+            name,
+            email,
+            password,
+          }
+        );
 
-    navigate("/dashboard");
+      // STORE TOKEN
+      localStorage.setItem(
+        "token",
+        data.token
+      );
 
-  } catch (error) {
+      // STORE ROLE
+      localStorage.setItem(
+        "role",
+        data.role
+      );
 
-    console.log(error);
+      // REDIRECT USER
+      navigate("/dashboard");
 
-    alert("Signup Failed");
-  }
-};
+    } catch (error) {
+
+      console.log(error);
+
+      alert(
+
+        error.response?.data?.message ||
+
+        "Signup Failed"
+
+      );
+    }
+  };
 
   return (
+
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
 
       <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
 
         <h1 className="text-3xl font-bold text-center mb-6">
-          Signup
+
+          User Signup
+
         </h1>
+
 
         <form
           onSubmit={handleSubmit}
@@ -54,25 +86,40 @@ const Signup = () => {
             type="text"
             placeholder="Full Name"
             className="w-full border p-3 rounded-lg"
+
             value={name}
-            onChange={(e) => setName(e.target.value)}
+
+            onChange={(e) =>
+              setName(e.target.value)
+            }
           />
+
 
           <input
             type="email"
             placeholder="Email"
             className="w-full border p-3 rounded-lg"
+
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+
+            onChange={(e) =>
+              setEmail(e.target.value)
+            }
           />
+
 
           <input
             type="password"
             placeholder="Password"
             className="w-full border p-3 rounded-lg"
+
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+
+            onChange={(e) =>
+              setPassword(e.target.value)
+            }
           />
+
 
           <button
             type="submit"
@@ -83,11 +130,24 @@ const Signup = () => {
 
         </form>
 
+
+        <p className="text-center mt-4 text-gray-600">
+
+          Already have an account?{" "}
+
+          <Link
+            to="/login"
+            className="text-blue-600 font-bold hover:underline"
+          >
+            Login
+          </Link>
+
+        </p>
+
       </div>
 
     </div>
   );
 };
-
 
 export default Signup;

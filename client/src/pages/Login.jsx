@@ -18,57 +18,54 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
 
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
+  try {
 
-      const { data } =
-        await API.post(
-          "/auth/login",
-          {
-            email,
-            password,
-          }
-        );
-
-      // STORE TOKEN
-      localStorage.setItem(
-        "token",
-        data.token
+    const { data } =
+      await API.post(
+        "/auth/login",
+        {
+          email,
+          password,
+        }
       );
 
-      // STORE ROLE
-      localStorage.setItem(
-        "role",
-        data.role
-      );
+    localStorage.setItem(
+      "token",
+      data.token
+    );
 
+    localStorage.setItem(
+      "role",
+      data.role
+    );
 
-      // ADMIN
-      if (data.role === "admin") {
+    // ADMIN
+    if (data.role === "admin") {
 
-        navigate(
-          "/admin/dashboard"
-        );
-      }
-
-      // MEMBER
-      else {
-
-        navigate("/dashboard");
-      }
-
-    } catch (error) {
-
-      alert(
-
-        error.response?.data?.message ||
-
-        "Login Failed"
-
+      navigate(
+        "/admin/dashboard"
       );
     }
-  };
+
+    // MEMBER
+    else {
+
+      navigate("/dashboard");
+    }
+
+  } catch (error) {
+
+    alert(
+
+      error.response?.data?.message ||
+
+      "Login Failed"
+
+    );
+  }
+};
 
   return (
 
