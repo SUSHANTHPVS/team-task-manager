@@ -20,6 +20,8 @@ const Projects = () => {
 
   const [userId, setUserId] =
     useState("");
+    const [users, setUsers] =
+  useState([]);
 
 
   // FETCH PROJECTS
@@ -83,6 +85,22 @@ const Projects = () => {
     }
   };
 
+  const fetchUsers = async () => {
+
+  try {
+
+    const { data } =
+      await API.get(
+        "/auth/users"
+      );
+
+    setUsers(data);
+
+  } catch (error) {
+
+    console.log(error);
+  }
+};
 
   // EDIT PROJECT
   const editProject = async (
@@ -119,29 +137,48 @@ const Projects = () => {
 
   // ADD MEMBER
   const addMember = async (
-    projectId
-  ) => {
+  projectId
+) => {
 
-    try {
+  if (!userId) {
 
-      await API.put(
+    return alert(
+      "Enter User ID"
+    );
+  }
 
-        `/projects/${projectId}/members`,
+  try {
 
-        {
-          userId,
-        }
-      );
+    await API.put(
 
-      setUserId("");
+      `/projects/${projectId}/members`,
 
-      fetchProjects();
+      {
+        userId,
+      }
+    );
 
-    } catch (error) {
+    alert(
+      "Member added successfully"
+    );
 
-      console.log(error);
-    }
-  };
+    setUserId("");
+
+    fetchProjects();
+
+  } catch (error) {
+
+    console.log(error);
+
+    alert(
+
+      error.response?.data?.message ||
+
+      "Failed to add member"
+
+    );
+  }
+};
 
 
   useEffect(() => {
@@ -150,7 +187,7 @@ const Projects = () => {
 
   }, []);
 
-
+  fetchUsers();
   return (
 
     <div className="flex">
@@ -301,20 +338,41 @@ const Projects = () => {
 
                     <div className="mt-5 flex gap-3">
 
-                      <input
-                        type="text"
-                        placeholder="Enter User ID"
+                      <select
 
-                        className="border p-2 rounded-lg flex-1"
+  className="border p-2 rounded-lg flex-1"
 
-                        value={userId}
+  value={userId}
 
-                        onChange={(e) =>
-                          setUserId(
-                            e.target.value
-                          )
-                        }
-                      />
+  onChange={(e) =>
+    setUserId(e.target.value)
+  }
+>
+
+  <option value="">
+    Select Team Member
+  </option>
+
+  {
+
+    users.map((user) => (
+
+      <option
+        key={user._id}
+        value={user._id}
+      >
+
+        {user.name}
+
+        {" - "}
+
+        {user.email}
+
+      </option>
+    ))
+  }
+
+</select>
 
 
                       <button
