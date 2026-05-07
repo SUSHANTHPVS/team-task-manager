@@ -130,6 +130,8 @@ export const loginUser = async (
 
         email: user.email,
 
+        role: user.role,
+
         token: generateToken(user._id),
 
       });
