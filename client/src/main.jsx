@@ -15,16 +15,15 @@ ReactDOM.createRoot(
 ).render(
 
   <React.StrictMode>
+    <AuthProvider>
 
-    <ThemeProvider>
+  <ThemeProvider>
 
-      <AuthProvider>
+    <App />
 
-        <App />
+  </ThemeProvider>
 
-      </AuthProvider>
-
-    </ThemeProvider>
+</AuthProvider>
 
   </React.StrictMode>
 );

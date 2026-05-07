@@ -30,16 +30,8 @@ const Sidebar = () => {
   } = useTheme();
 
 
-  // HANDLE LOGOUT
+  // LOGOUT
   const handleLogout = () => {
-
-    localStorage.removeItem(
-      "token"
-    );
-
-    localStorage.removeItem(
-      "role"
-    );
 
     logout();
 
@@ -76,11 +68,6 @@ const Sidebar = () => {
       path: "/projects",
     },
 
-    {
-      name: "Tasks",
-      path: "/tasks",
-    },
-
   ];
 
 
@@ -92,7 +79,7 @@ const Sidebar = () => {
 
   return (
 
-    <div className="w-64 bg-gray-900 dark:bg-black text-white min-h-screen p-6">
+    <div className="w-64 bg-gray-900 text-white min-h-screen p-6">
 
       <h1 className="text-3xl font-bold mb-10 text-blue-400">
 
@@ -101,7 +88,7 @@ const Sidebar = () => {
       </h1>
 
 
-      {/* NAVIGATION */}
+      {/* NAV LINKS */}
 
       <div className="space-y-4">
 
@@ -129,7 +116,7 @@ const Sidebar = () => {
       </div>
 
 
-      {/* THEME BUTTON */}
+      {/* THEME */}
 
       <button
 
@@ -147,7 +134,7 @@ const Sidebar = () => {
       </button>
 
 
-      {/* LOGOUT BUTTON */}
+      {/* LOGOUT */}
 
       <button
 
