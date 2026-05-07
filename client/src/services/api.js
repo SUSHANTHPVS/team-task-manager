@@ -7,8 +7,6 @@ const API = axios.create({
 
 });
 
-
-// TOKEN INTERCEPTOR
 API.interceptors.request.use((req) => {
 
   const token =
