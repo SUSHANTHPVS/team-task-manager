@@ -2,10 +2,8 @@ import Project from "../models/Project.js";
 
 
 // CREATE PROJECT
-export const createProject = async (
-  req,
-  res
-) => {
+export const createProject =
+async (req, res) => {
 
   try {
 
@@ -13,7 +11,6 @@ export const createProject = async (
       name,
       description,
     } = req.body;
-
 
     const project =
       await Project.create({
@@ -27,7 +24,6 @@ export const createProject = async (
 
       });
 
-
     res.status(201).json(project);
 
   } catch (error) {
@@ -37,49 +33,11 @@ export const createProject = async (
     });
   }
 };
-export const addMember =
-  async (req, res) => {
 
-    try {
 
-      const project =
-        await Project.findById(
-          req.params.id
-        );
-
-      if (
-
-        project.admin.toString()
-        !== req.user._id.toString()
-
-      ) {
-
-        return res.status(403).json({
-          message: "Admin only",
-        });
-      }
-
-      project.members.push(
-        req.body.userId
-      );
-
-      await project.save();
-
-      res.json(project);
-
-    } catch (error) {
-
-      res.status(500).json({
-        message: error.message,
-      });
-    }
-};
-
-// GET ALL PROJECTS
-export const getProjects = async (
-  req,
-  res
-) => {
+// GET PROJECTS
+export const getProjects =
+async (req, res) => {
 
   try {
 
@@ -100,7 +58,6 @@ export const getProjects = async (
         "name email"
       );
 
-
     res.json(projects);
 
   } catch (error) {
@@ -110,10 +67,11 @@ export const getProjects = async (
     });
   }
 };
-export const addMember = async (
-  req,
-  res
-) => {
+
+
+// ADD MEMBER
+export const addMember =
+async (req, res) => {
 
   try {
 
@@ -129,8 +87,7 @@ export const addMember = async (
       });
     }
 
-
-    // ONLY ADMIN CAN ADD MEMBERS
+    // ONLY ADMIN
     if (
 
       project.admin.toString()
@@ -143,8 +100,7 @@ export const addMember = async (
       });
     }
 
-
-    // ADD MEMBER
+    // ADD USER
     project.members.push(
       req.body.userId
     );
