@@ -228,30 +228,7 @@ async (req, res) => {
   }
 };
 // VIEW MEMBERS
-export const getProjectMembers =
-async (req, res) => {
 
-  try {
-
-    const project =
-      await Project.findById(
-        req.params.id
-      )
-
-      .populate(
-        "members",
-        "name email role"
-      );
-
-    res.json(project.members);
-
-  } catch (error) {
-
-    res.status(500).json({
-      message: error.message,
-    });
-  }
-};
 // GET PROJECT MEMBERS
 export const getProjectMembers =
 async (req, res) => {
