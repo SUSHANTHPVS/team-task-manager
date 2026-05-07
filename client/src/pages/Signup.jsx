@@ -48,7 +48,7 @@ const Signup = () => {
       );
 
       // REDIRECT USER
-      navigate("/dashboard");
+      navigate("/login");
 
     } catch (error) {
 
