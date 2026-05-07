@@ -83,7 +83,7 @@ const Sidebar = () => {
 
       <h1 className="text-3xl font-bold mb-10 text-blue-400">
 
-        Task Manager
+        TaskFlow
 
       </h1>
 

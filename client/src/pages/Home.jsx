@@ -13,12 +13,13 @@ const Home = () => {
         <div className="bg-white rounded-2xl shadow-xl p-10 text-center">
 
           <h1 className="text-4xl font-bold mb-4 text-blue-600">
-            User Portal
+            
+                 TaskFlow
           </h1>
 
           <p className="text-gray-600 mb-8">
-            Manage your assigned tasks, projects,
-            and track your work progress.
+            Smart Team Collaboration &
+            Project Management Platform
           </p>
 
 
